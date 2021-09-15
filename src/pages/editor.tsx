@@ -4,6 +4,7 @@ import { useStateWithStorage } from '../hooks/use_state_with_storage'
 import * as ReactMarkdown from 'react-markdown'
 import { putMemo } from '../indexeddb/memos'
 import { Button } from '../components/button'
+import { Link } from 'react-router-dom'
 import { SaveModal } from '../components/save_modal'
 
 const { useState } = React
@@ -72,6 +73,9 @@ export const Editor: React.FC = () => {
           <Button onClick={() => setShowModal(true)}>
             保存する
             </Button>
+          <Link to="/history">
+            履歴を見る
+            </Link>
         </HeaderControl>
       </Header>
       <Wrapper>
