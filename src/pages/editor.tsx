@@ -5,20 +5,17 @@ import * as ReactMarkdown from 'react-markdown'
 import { putMemo } from '../indexeddb/memos'
 import { Button } from '../components/button'
 import { Link } from 'react-router-dom'
+import { Header } from '../components/header'
 import { SaveModal } from '../components/save_modal'
 
 const { useState } = React
 
-const Header = styled.header`
-    align-content: center;
-    display: flex;
-    font-size: 1.5rem;
-    height: 2rem;
-    justify-content: space-between;
+const Wrapper = styled.div`
+    bottom: 0;
     left: 0;
-    line-height: 2rem;
-    padding: 0.5rem 1rem;
-    top: 0;
+    position: fixed;
+    right: 0;
+    top: 3rem;
   `
 
 const HeaderControl = styled.div`
@@ -27,13 +24,12 @@ const HeaderControl = styled.div`
     align-content: center;
   `
 
-const Wrapper = styled.div`
-  bottom: 0;
-  left: 0;
+const HeaderArea = styled.div`
   position: fixed;
   right: 0;
-  top: 3rem;
-`
+  top: 0;
+  left: 0;
+  `
 
 const TextArea = styled.textarea`
   border-right: 1px solid silver;
@@ -67,17 +63,16 @@ export const Editor: React.FC = () => {
 
   return (
     <>
-      <Header>
-        Markdown Editor
-          <HeaderControl>
+      <HeaderArea>
+        <Header title="Markdown Editor">
           <Button onClick={() => setShowModal(true)}>
             保存する
             </Button>
           <Link to="/history">
             履歴を見る
             </Link>
-        </HeaderControl>
-      </Header>
+        </Header>
+      </HeaderArea>
       <Wrapper>
         <TextArea
           onChange={(event) => setText(event.target.value)}
@@ -87,15 +82,17 @@ export const Editor: React.FC = () => {
           <ReactMarkdown>{text}</ReactMarkdown>
         </Preview>
       </Wrapper>
-      {showModal && (
-        <SaveModal
-          onSave={(title: string): void => {
-            putMemo(title, text)
-            setShowModal(false)
-          }}
-          onCancel={() => setShowModal(false)}
-        />
-      )}
+      {
+        showModal && (
+          <SaveModal
+            onSave={(title: string): void => {
+              putMemo(title, text)
+              setShowModal(false)
+            }}
+            onCancel={() => setShowModal(false)}
+          />
+        )
+      }
     </>
   )
 }
